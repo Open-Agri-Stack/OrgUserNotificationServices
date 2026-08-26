@@ -129,7 +129,9 @@ public class UserServiceImpl implements UserService {
                     textValue(userEntity, Constants.EMAIL),
                     primaryID,
                     textValue(userEntity, Constants.ORG_ID_RQST),
-                    textValue(userEntity, Constants.ENTITY_TYPE));
+                    textValue(userEntity, Constants.FUNCTIONAL_ROLE),
+                    textValue(userEntity, Constants.ORG_NAME),
+                    textValue(userEntity, Constants.DISPLAY_NAME));
             if (authResponse == null || !authResponse.getStatusCode().is2xxSuccessful()) {
                 log.error("UserServiceImpl::createUser::auth_service returned a non-2xx status: {}",
                         authResponse == null ? "no response" : authResponse.getStatusCode());
