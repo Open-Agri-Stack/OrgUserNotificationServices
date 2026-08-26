@@ -8,14 +8,13 @@
       "key": "Primary",
       "keyLength": 12,
       "description": "description about orgtypeId"
+    },
+    "orgtypeName": {
+      "type": "string",
+      "description": "Name of the organisation type, e.g. Research Institute."
     }
   },
-  "orgtypeName": {
-    "type": "string",
-    "description": "Name of the Origanization associated with this Origanization Type."
-  },
   "required": [
-    "orgType",
-    "orgName"
+    "orgtypeName"
   ]
 }
