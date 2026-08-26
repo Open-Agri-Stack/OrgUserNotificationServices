@@ -46,16 +46,21 @@ public class AuthUserService {
      * {@code ResourceAccessException} — none of them are swallowed here.
      */
     public ResponseEntity<Map<String, Object>> createAuthUser(String firstName, String lastName, String email,
-                                                              String userId, String orgId, String entityType) {
+                                                              String userId, String orgId, String functionalRole,
+                                                              String orgName, String displayName) {
         String uri = buildUri();
 
+        // Keys are auth_service's request contract, not this catalogue's schema — they happen to
+        // coincide. functionalRole and email are required there; the rest carry forward when absent.
         Map<String, Object> request = new HashMap<>();
         request.put("firstName", firstName);
         request.put("lastName", lastName);
         request.put("email", email);
         request.put("userId", userId);
         request.put("orgId", orgId);
-        request.put("entityType", entityType);
+        request.put("functionalRole", functionalRole);
+        request.put("orgName", orgName);
+        request.put("displayName", displayName);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -67,8 +72,8 @@ public class AuthUserService {
         }
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
 
-        log.info("AuthUserService::createAuthUser::posting to {} for userId: {}, orgId: {}, entityType: {}",
-                uri, userId, orgId, entityType);
+        log.info("AuthUserService::createAuthUser::posting to {} for userId: {}, orgId: {}, functionalRole: {}",
+                uri, userId, orgId, functionalRole);
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(uri, HttpMethod.POST, entity,
                 new ParameterizedTypeReference<Map<String, Object>>() {

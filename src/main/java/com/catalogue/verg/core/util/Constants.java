@@ -83,7 +83,10 @@ public class Constants{
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
     public static final String EMAIL = "email";
-    public static final String ENTITY_TYPE = "entityType";
+    /** Renamed from entityType when the user schema collapsed registry[] to a single scalar role. */
+    public static final String FUNCTIONAL_ROLE = "functionalRole";
+    public static final String ORG_NAME = "orgName";
+    public static final String DISPLAY_NAME = "displayName";
     public static final String PASSWORD = "password";
     public static final String PIN = "pin";
     // auth_service must accept the user before anything is persisted
