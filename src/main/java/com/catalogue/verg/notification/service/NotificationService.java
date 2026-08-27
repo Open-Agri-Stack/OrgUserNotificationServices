@@ -367,7 +367,7 @@ public class NotificationService {
                 new HashMap<>();
 
         filterCriteriaMap.put(
-                "entityType",
+                "functionalRole",
                 receiver
         );
 
