@@ -49,4 +49,64 @@ public class NotificationController {
                 .status(response.getResponseCode())
                 .body(response);
     }
+
+    @PutMapping("/{notificationId}/read")
+    public ResponseEntity<CustomResponse> markAsRead(
+            @PathVariable Long notificationId,
+            @RequestParam String userId) {
+
+        CustomResponse response =
+                notificationService.markAsRead(
+                        notificationId,
+                        userId
+                );
+
+        return ResponseEntity
+                .status(response.getResponseCode())
+                .body(response);
+    }
+
+    @PutMapping("/read-all")
+    public ResponseEntity<CustomResponse> markAllAsRead(
+            @RequestParam String userId) {
+
+        CustomResponse response =
+                notificationService.markAllAsRead(
+                        userId
+                );
+
+        return ResponseEntity
+                .status(response.getResponseCode())
+                .body(response);
+    }
+
+    @PutMapping("/{notificationId}/clear")
+    public ResponseEntity<CustomResponse> clearNotification(
+            @PathVariable Long notificationId,
+            @RequestParam String userId) {
+
+        CustomResponse response =
+                notificationService.clearNotification(
+                        notificationId,
+                        userId
+                );
+
+        return ResponseEntity
+                .status(response.getResponseCode())
+                .body(response);
+    }
+
+    @PutMapping("/clear-all")
+    public ResponseEntity<CustomResponse> clearAllNotifications(
+            @RequestParam String userId) {
+
+        CustomResponse response =
+                notificationService.clearAllNotifications(
+                        userId
+                );
+
+        return ResponseEntity
+                .status(response.getResponseCode())
+                .body(response);
+    }
 }
