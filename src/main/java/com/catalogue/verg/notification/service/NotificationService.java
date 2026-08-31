@@ -71,6 +71,14 @@ public class NotificationService {
             return response;
         }
 
+//        if(request.getOrgId() == null ||  request.getOrgId().trim().isEmpty()) {
+//            response.setMessage("Orgid is required");
+//            response.setResponseCode(HttpStatus.BAD_REQUEST);
+//            return response;
+//        }
+
+        String orgId = request.getOrgId();
+
         if (!"PORTAL".equalsIgnoreCase(
                 request.getNotificationChannel().trim())) {
 
@@ -143,6 +151,7 @@ public class NotificationService {
         SearchCriteria countSearchCriteria =
                 buildReceiverSearchCriteria(
                         receiverEntityType,
+                        orgId,
                         0,
                         1
                 );
@@ -197,6 +206,7 @@ public class NotificationService {
         SearchCriteria allUsersSearchCriteria =
                 buildReceiverSearchCriteria(
                         receiverEntityType,
+                        orgId,
                         0,
                         (int) totalCount
                 );
@@ -360,6 +370,7 @@ public class NotificationService {
 
     private SearchCriteria buildReceiverSearchCriteria(
             String receiver,
+            String orgId,
             int pageNumber,
             int pageSize) {
 
@@ -370,6 +381,13 @@ public class NotificationService {
                 "functionalRole",
                 receiver
         );
+
+        if (orgId != null && !orgId.trim().isEmpty()) {
+            filterCriteriaMap.put(
+                    "orgId",
+                    orgId.trim()
+            );
+        }
 
         SearchCriteria searchCriteria =
                 new SearchCriteria();
