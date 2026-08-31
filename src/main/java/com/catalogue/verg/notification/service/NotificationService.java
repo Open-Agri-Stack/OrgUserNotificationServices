@@ -610,4 +610,161 @@ public class NotificationService {
 
         return response;
     }
+
+    @Transactional
+    public CustomResponse markAsRead(
+            Long notificationId,
+            String userId) {
+
+        CustomResponse response = new CustomResponse();
+
+        if (notificationId == null) {
+            response.setMessage("Notification ID is required");
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return response;
+        }
+
+        if (userId == null || userId.trim().isEmpty()) {
+            response.setMessage("User ID is required");
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return response;
+        }
+
+        int updated =
+                notificationRepository.markAsRead(
+                        notificationId,
+                        userId.trim()
+                );
+
+        if (updated == 0) {
+            response.setMessage(
+                    "Notification not found"
+            );
+            response.setResponseCode(
+                    HttpStatus.NOT_FOUND
+            );
+            return response;
+        }
+
+        response.setMessage(
+                "Notification marked as read successfully"
+        );
+        response.setResponseCode(
+                HttpStatus.OK
+        );
+
+        return response;
+    }
+
+    @Transactional
+    public CustomResponse markAllAsRead(
+            String userId) {
+
+        CustomResponse response = new CustomResponse();
+
+        if (userId == null || userId.trim().isEmpty()) {
+            response.setMessage("User ID is required");
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return response;
+        }
+
+        int updated =
+                notificationRepository.markAllAsRead(
+                        userId.trim()
+                );
+
+        response.setMessage(
+                "All notifications marked as read successfully"
+        );
+
+        response.setResponseCode(
+                HttpStatus.OK
+        );
+
+        response.getResult().put(
+                "updatedCount",
+                updated
+        );
+
+        return response;
+    }
+
+    @Transactional
+    public CustomResponse clearNotification(
+            Long notificationId,
+            String userId) {
+
+        CustomResponse response = new CustomResponse();
+
+        if (notificationId == null) {
+            response.setMessage("Notification ID is required");
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return response;
+        }
+
+        if (userId == null || userId.trim().isEmpty()) {
+            response.setMessage("User ID is required");
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return response;
+        }
+
+        int updated =
+                notificationRepository.clearNotification(
+                        notificationId,
+                        userId.trim()
+                );
+
+        if (updated == 0) {
+            response.setMessage(
+                    "Notification not found"
+            );
+            response.setResponseCode(
+                    HttpStatus.NOT_FOUND
+            );
+            return response;
+        }
+
+        response.setMessage(
+                "Notification cleared successfully"
+        );
+
+        response.setResponseCode(
+                HttpStatus.OK
+        );
+
+        return response;
+    }
+
+    @Transactional
+    public CustomResponse clearAllNotifications(
+            String userId) {
+
+        CustomResponse response = new CustomResponse();
+
+        if (userId == null || userId.trim().isEmpty()) {
+            response.setMessage("User ID is required");
+            response.setResponseCode(HttpStatus.BAD_REQUEST);
+            return response;
+        }
+
+        int updated =
+                notificationRepository.clearAllNotifications(
+                        userId.trim()
+                );
+
+        response.setMessage(
+                "All notifications cleared successfully"
+        );
+
+        response.setResponseCode(
+                HttpStatus.OK
+        );
+
+        response.getResult().put(
+                "updatedCount",
+                updated
+        );
+
+        return response;
+    }
 }
