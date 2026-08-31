@@ -8,6 +8,8 @@ public class NotificationRequest {
 
     private String receiverId;
 
+    private String orgId;
+
     private String templateCode;
 
     private String templateModule;
