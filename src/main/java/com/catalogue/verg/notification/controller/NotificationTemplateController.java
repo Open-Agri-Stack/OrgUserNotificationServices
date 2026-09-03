@@ -1,6 +1,7 @@
 package com.catalogue.verg.notification.controller;
 
 import com.catalogue.verg.core.dto.CustomResponse;
+import com.catalogue.verg.core.dto.NotificationTemplateFilterRequest;
 import com.catalogue.verg.core.dto.NotificationTemplateRequest;
 import com.catalogue.verg.notification.service.NotificationTemplateService;
 import org.springframework.http.ResponseEntity;
@@ -78,6 +79,51 @@ public class NotificationTemplateController {
                         size,
                         search
                 );
+
+        return ResponseEntity
+                .status(response.getResponseCode())
+                .body(response);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<CustomResponse> getTemplates(
+            @RequestBody NotificationTemplateFilterRequest request) {
+
+        CustomResponse response =
+                notificationTemplateService.getTemplatesAdmin(request);
+
+        return ResponseEntity
+                .status(response.getResponseCode())
+                .body(response);
+    }
+
+    @GetMapping("/modules")
+    public ResponseEntity<CustomResponse> getModules() {
+
+        CustomResponse response =
+                notificationTemplateService.getModules();
+
+        return ResponseEntity
+                .status(response.getResponseCode())
+                .body(response);
+    }
+
+    @GetMapping("/statuses")
+    public ResponseEntity<CustomResponse> getStatuses() {
+
+        CustomResponse response =
+                notificationTemplateService.getStatuses();
+
+        return ResponseEntity
+                .status(response.getResponseCode())
+                .body(response);
+    }
+
+    @GetMapping("/receivers")
+    public ResponseEntity<CustomResponse> getReceivers() {
+
+        CustomResponse response =
+                notificationTemplateService.getReceivers();
 
         return ResponseEntity
                 .status(response.getResponseCode())
