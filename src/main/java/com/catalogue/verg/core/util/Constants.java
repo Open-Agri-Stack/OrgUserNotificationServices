@@ -1,5 +1,6 @@
 package com.catalogue.verg.core.util;
 
+import java.util.List;
 
 public class Constants{
 
@@ -15,9 +16,7 @@ public class Constants{
     public static final String ERROR = "ERROR";
     public static final String REDIS_KEY_PREFIX = "verg_cache_";
 
-    // Lifecycle / approval workflow constants
-    // Note: ACTIVE (published/live) is reused; IN_ACTIVE now means deactivated (toggle);
-    // DELETED (below) is the soft-delete state set by delete().
+    // Lifecycle statuses: ACTIVE = live, IN_ACTIVE = toggled off, DELETED (below) = soft-deleted.
     public static final String DRAFT = "DRAFT";
     public static final String PENDING = "PENDING";
     public static final String APPROVED = "APPROVED";
@@ -89,8 +88,11 @@ public class Constants{
     public static final String DISPLAY_NAME = "displayName";
     public static final String PASSWORD = "password";
     public static final String PIN = "pin";
+    public static final List<String> CREDENTIAL_FIELDS = List.of(PASSWORD, PIN);
     // auth_service must accept the user before anything is persisted
     public static final String AUTH_USER_CREATE_FAILED = "auth_service rejected the user creation";
+    public static final String AUTH_USER_REVOKE_FAILED = "auth_service rejected the user revocation";
+    public static final String AUTH_USER_DELETE_FAILED = "auth_service rejected the user deletion";
 
     // Credential verification (/user/v1/verify)
     public static final String EMAIL_PASSWORD_REQUIRED = "Email and password are required";
@@ -98,6 +100,19 @@ public class Constants{
     public static final String INVALID_CREDENTIALS = "Invalid credentials";
     public static final String USER_NOT_ACTIVE = "User is not active";
     public static final String SUCCESSFULLY_VERIFIED = "successfully verified";
+
+    // Credential expiry: ISO-8601 dates set by the caller; a blank value never expires
+    public static final String PASSWORD_EXPIRES_ON = "passwordExpiresOn";
+    public static final String PIN_EXPIRES_ON = "pinExpiresOn";
+    public static final String PASSWORD_EXPIRED = "Password has expired";
+    public static final String PIN_EXPIRED = "PIN has expired";
+
+    // PIN verification (/user/v1/verify_pin) and change (/user/v1/update/{id}/pin)
+    public static final String CURRENT_PASSWORD = "currentPassword";
+    public static final String NEW_PIN = "newPin";
+    public static final String USER_ID_PIN_REQUIRED = "userId and pin are required";
+    public static final String PIN_CHANGE_FIELDS_REQUIRED = "currentPassword and newPin are required";
+    public static final String PIN_MUST_BE_SIX_DIGITS = "PIN must be exactly 6 digits";
 
     
     // Org Specific Constants

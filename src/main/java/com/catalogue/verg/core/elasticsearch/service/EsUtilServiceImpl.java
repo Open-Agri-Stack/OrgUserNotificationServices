@@ -53,9 +53,7 @@ public class EsUtilServiceImpl implements ESUtilService {
         this.esConfig = esConfig;
     }
 
-    // -------------------------------------------------------------------------
-    // Public API
-    // -------------------------------------------------------------------------
+    // --- Public API ---
 
     @Override
     public Result addDocument(String esIndexName, String type, String id,
@@ -166,13 +164,14 @@ public class EsUtilServiceImpl implements ESUtilService {
         if (searchCriteria.getPageSize() != 0) {
             searchBuilder.size(searchCriteria.getPageSize());
         }
-        if (searchCriteria.getRequestedFields() != null) {
-            if (searchCriteria.getRequestedFields().isEmpty()) {
-                log.error("Please specify at least one field to include in the results.");
+        // Always filter: excludes win over includes, so no requestedFields can return a credential.
+        List<String> requestedFields = searchCriteria.getRequestedFields();
+        searchBuilder.source(s -> s.filter(f -> {
+            if (requestedFields != null && !requestedFields.isEmpty()) {
+                f.includes(requestedFields);
             }
-            List<String> fields = searchCriteria.getRequestedFields();
-            searchBuilder.source(s -> s.filter(f -> f.includes(fields)));
-        }
+            return f.excludes(Constants.CREDENTIAL_FIELDS);
+        }));
 
         addSort(searchCriteria, searchBuilder);
 
@@ -243,9 +242,7 @@ public class EsUtilServiceImpl implements ESUtilService {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Query building
-    // -------------------------------------------------------------------------
+    // --- Query building ---
 
     private Query buildQuery(SearchCriteria searchCriteria) {
         BoolQuery.Builder boolBuilder = buildFilterQuery(searchCriteria.getFilterCriteriaMap());
@@ -408,9 +405,7 @@ public class EsUtilServiceImpl implements ESUtilService {
         return builder;
     }
 
-    // -------------------------------------------------------------------------
-    // Aggregations / facets
-    // -------------------------------------------------------------------------
+    // --- Aggregations / facets ---
 
     private Map<String, Aggregation> buildAggregations(List<String> facets) {
         if (facets == null) return Collections.emptyMap();
@@ -435,9 +430,7 @@ public class EsUtilServiceImpl implements ESUtilService {
         return result;
     }
 
-    // -------------------------------------------------------------------------
-    // Utilities
-    // -------------------------------------------------------------------------
+    // --- Utilities ---
 
     private Map<String, Object> loadSchema(String jsonFilePath) throws IOException {
         JsonSchemaFactory schemaFactory = JsonSchemaFactory.getInstance();
